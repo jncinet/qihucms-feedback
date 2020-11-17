@@ -11,6 +11,10 @@ use Qihucms\Feedback\Resources\Feedback as FeedbackResource;
 
 class FeedbackController extends ApiController
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     /**
      * 我的反馈
      *
