@@ -1,0 +1,30 @@
+{
+  "name": "jncinet/qihucms-feedback",
+  "description": "qihucms feedback.",
+  "keywords": [
+    "laravel",
+    "qihucms",
+    "feedback"
+  ],
+  "homepage": "https://www.qihucms.com",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "zhangye",
+      "email": "y@qilephp.com"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "Qihucms\\Feedback\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Qihucms\\Feedback\\FeedbackServiceProvider"
+      ]
+    }
+  }
+}
