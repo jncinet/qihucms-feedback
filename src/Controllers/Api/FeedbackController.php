@@ -2,19 +2,21 @@
 
 namespace Qihucms\Feedback\Controllers\Api;
 
-use App\Http\Controllers\Api\ApiController;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Qihucms\Feedback\Models\Feedback;
 use Qihucms\Feedback\Requests\StoreRequest;
 use Qihucms\Feedback\Resources\FeedbackCollection;
 use Qihucms\Feedback\Resources\Feedback as FeedbackResource;
 
-class FeedbackController extends ApiController
+class FeedbackController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth:api');
     }
+
     /**
      * 我的反馈
      *
@@ -24,7 +26,7 @@ class FeedbackController extends ApiController
     public function index(Request $request)
     {
         $limit = $request->get('limit', 15);
-        $result = Feedback::where('user_id', \Auth::id())->latest()->paginate($limit);
+        $result = Feedback::where('user_id', Auth::id())->latest()->paginate($limit);
 
         return new FeedbackCollection($result);
     }
@@ -38,7 +40,7 @@ class FeedbackController extends ApiController
     public function store(StoreRequest $request)
     {
         $data = $request->only(['title', 'content', 'file', 'contact']);
-        $data['user_id'] = \Auth::id();
+        $data['user_id'] = Auth::id();
         $data['status'] = 0;
         $result = Feedback::create($data);
 
@@ -53,7 +55,7 @@ class FeedbackController extends ApiController
      */
     public function show($id)
     {
-        $result = Feedback::where('id', $id)->where('user_id', \Auth::id())->first();
+        $result = Feedback::where('id', $id)->where('user_id', Auth::id())->first();
 
         return new FeedbackResource($result);
     }
@@ -69,13 +71,13 @@ class FeedbackController extends ApiController
     {
         $data = $request->only(['title', 'content', 'file', 'contact']);
 
-        $result = Feedback::where('user_id', \Auth::id())->where('id', $id)->update($data);
+        $result = Feedback::where('user_id', Auth::id())->where('id', $id)->update($data);
 
         if ($result) {
             return $this->jsonResponse(['id' => $id]);
         }
 
-        return $this->jsonResponse(['更新失败'], '', 422);
+        return $this->jsonResponse([__('feedback::message.update_fail')], '', 422);
     }
 
     /**
@@ -86,10 +88,10 @@ class FeedbackController extends ApiController
      */
     public function destroy($id)
     {
-        if (Feedback::where('user_id', \Auth::id())->where('id', $id)->delete()) {
+        if (Feedback::where('user_id', Auth::id())->where('id', $id)->delete()) {
             return $this->jsonResponse(['id' => $id]);
         }
 
-        return $this->jsonResponse(['删除失败'], '', 422);
+        return $this->jsonResponse([__('feedback::message.delete_fail')], '', 422);
     }
 }

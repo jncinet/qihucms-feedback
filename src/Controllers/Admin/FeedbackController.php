@@ -65,7 +65,7 @@ class FeedbackController extends Controller
         $show->field('id', __('feedback::feedback.id'));
         $show->field('user_id', __('feedback::feedback.user_id'))
             ->as(function () {
-                return $this->user ? $this->user->username : '会员不存在';
+                return $this->user ? $this->user->username : $this->user_id;
             });
         $show->field('title', __('feedback::feedback.title'));
         $show->field('content', __('feedback::feedback.content'))->unescape();
@@ -96,10 +96,10 @@ class FeedbackController extends Controller
                     return [$user->id => $user->username];
                 }
             })
-            ->ajax(route('api.article.select.users.q'))
+            ->ajax(route('admin.select.user'))
             ->required();
         $form->text('title', __('feedback::feedback.title'))->readonly();
-        $form->textarea('content', __('feedback::feedback.content'))->readonly();
+        $form->UEditor('content', __('feedback::feedback.content'));
         $form->text('contact', __('feedback::feedback.contact'))->readonly();
         $form->image('file', __('feedback::feedback.file'))->readonly();
         $form->UEditor('reply', __('feedback::feedback.reply'));

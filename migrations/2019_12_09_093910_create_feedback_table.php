@@ -17,7 +17,7 @@ class CreateFeedbackTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->default(0)
                 ->comment('会员ID');
-            $table->string('title')->comment('问题描述');
+            $table->string('title')->comment('问题标题');
             $table->text('content')->comment('问题描述');
             $table->text('reply')->nullable()->comment('问题回复');
             $table->string('contact')->nullable()->comment('联系方式');

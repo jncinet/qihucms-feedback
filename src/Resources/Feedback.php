@@ -4,6 +4,7 @@ namespace Qihucms\Feedback\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class Feedback extends JsonResource
 {
@@ -20,9 +21,10 @@ class Feedback extends JsonResource
             'user_id' => $this->user_id,
             'title' => $this->title,
             'content' => $this->content,
-            'file' => empty($this->file) ? null : \Storage::url($this->file),
+            'file' => empty($this->file) ? null : Storage::url($this->file),
             'contact' => $this->contact,
             'reply' => $this->reply,
+            'status' => $this->status,
             'created_at' => Carbon::parse($this->created_at)->diffForHumans(),
             'updated_at' => Carbon::parse($this->updated_at)->diffForHumans(),
         ];
